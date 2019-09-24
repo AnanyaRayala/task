@@ -1,0 +1,7 @@
+<% if @action == "edit" %>
+$('#post-content').html("<%= j render 'leave_application' %>");
+$('#post-modal').modal('show');
+<%else%>
+$('#post-content').html("<%= j render 'confirm_pop' %>");
+$('#confirmModal').modal('show');
+<%end%>

@@ -1,0 +1,71 @@
+<div id="post-modal" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="post1ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+        <div class="col-md-6">
+          <h4 class="modal-title text-center" id="post-modal">LEAVE APPLICATION FORM</h4>
+        </div>
+        <div class="col-md-6">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div style="padding-top: 1%;
+          width: 80%;
+          padding-left: 10%;"
+        >
+          <%= form_with model: @leave_application_request do |form| %>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label>User Name:</label>
+                  <%= form.text_field :user_name , class: "form-control", placeholder: "User name", required: true %>
+                </div>
+                <div class="form-group col-md-6">
+                  <label >Applying date:</label>
+                  <%= form.date_field("apply_date", class: "form-control", min: Date.today, required: true )  %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label>From date:</label>
+                  <%= form.date_field("from_date", class: "form-control", min: Date.today, required: true ) %>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>To Date :</label>
+                  <%= form.date_field("to_date", class: "form-control", min: Date.today) %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label>Reason:</label>
+                  <%= form.text_area :reason , class: "form-control", placeholder: "Reason"  %>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Reporting Head</label>
+                  <%= form.text_field :reporting_head , class: "form-control", placeholder: "Reporting Head", required: true   %>
+                </div>
+              </div>
+            <div style="padding: 15px;">
+              <div class="row"> 
+                <div class="col-md-6">
+                  <%= form.hidden_field :user_id , value: @leave_application_request.user_id  %>
+                  <%= form.submit "SUBMIT", class: "form-control btn btn-primary" %>
+                </div>
+                <div class="col-md-6">
+                  <%= form.submit "RESET", type: "Reset", class: "form-control btn btn-default" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

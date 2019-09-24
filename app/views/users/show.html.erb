@@ -1,0 +1,105 @@
+<% if @user.role == "employee" %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h2>User Profile</h2>
+    </div>
+    <div class="col-md-6">
+      <%= link_to "Leave Application", new_leave_application_request_path(user_id: @user.id), method: :get, remote: true,:class => 'btn btn-info pull-right'  %>  
+    </div>
+  </div>
+  <div class="row">
+    <table id="t01">
+      <tr>
+        <th>Leave Application Status </th>
+        <th>Leaves Credited</th> 
+        <th>Leaves Taken</th>
+        <th>Current Leave Balance</th>
+      </tr>
+      <tr>
+        <td><%= @user.leave_app_status || "Not Applied" %></td>
+        <td><%= @user.leaves_credited.to_i %></td>
+        <td><%= @user.leaves_taken.to_i %></td>
+        <td><%= @user.leave_balance.to_i  %></td>
+      </tr>
+    </table>
+  </div>
+  <h2>Leave Requests</h2>
+  <% if @leave_application_requests.length > 0 %>
+    <div class="row">
+      <table id="t01">
+        <tr>
+          <th>User Name</th>
+          <th>Apply Date</th> 
+          <th>Duration</th>
+          <th>Leave Status</th>
+          <th></th>
+          <th></th>
+        </tr>
+        <% @leave_application_requests.each do |lr| %>
+        <tr>
+          <td><%= lr.user_name %></td>
+          <td><%= lr.apply_date.try(:strftime,"%m/%d/%Y") %></td>
+          <td><%= lr.from_date.try(:strftime, "%m/%d/%Y") %>-<%= lr.to_date.try(:strftime, "%m/%d/%Y") %></td>
+          <td><%= lr.leave_status %></td>
+          <td><%= link_to "Edit", edit_leave_application_request_path(lr, { action_to_do: "edit" }), method: :get, 
+            remote: true, :class => 'btn btn-primary pull-right'  %>  </td>
+          <td><%= link_to "Cancel", edit_leave_application_request_path(lr, { action_to_do: "cancel"}) , method: :get, 
+            remote: true, :class => 'btn btn-danger pull-right'  %> </td>
+        </tr>
+        <%end%>
+      </table>
+    </div>
+  <%else%>
+    <p>No Applications for Leave</p>
+  <%end%>
+</div>
+<%end%>
+
+<%if @user.role == "reporting_head" %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Reporting Head</h2>
+      </div>
+    </div>
+    <% if @leave_application_requests.length > 0 %>
+    <div class="row">
+      <table id="t01">
+        <tr>
+          <th>User Name </th>
+          <th>Apply Date</th> 
+          <th>Duration</th>
+          <th>Leave Status</th>
+          <th></th> 
+          <th></th>
+        </tr>
+        <% @leave_application_requests.each do |lr| %>
+        <tr>
+          <td><%= lr.user_name %></td>
+          <td><%= lr.apply_date.try(:strftime,"%m/%d/%Y") %></td>
+          <td><%= lr.from_date.try(:strftime, "%m/%d/%Y") %> - <%= lr.to_date.try(:strftime, "%m/%d/%Y") %></td>
+          <td><%= lr.leave_status  %></td>
+          <% if lr.leave_status != "approved"%>
+          <td><%= link_to "Approve", "/leave_application_requests/#{lr.id}?leave_application_request[leave_status]=1&leave_application_request[user_id]=#{@user.id}", method: :put, :class => 'navbar-link pull-right'  %> </td>
+          <%else%>
+            <td></td>
+          <%end%>
+          <% if lr.leave_status != "rejected"%>
+          <td><%= link_to "Reject", "/leave_application_requests/#{lr.id}?leave_application_request[leave_status]=2&leave_application_request[user_id]=#{@user.id}" , method: :put, :class => 'navbar-link pull-right'  %></td>
+          <%else%>
+            <td></td>
+          <%end%>
+        </tr>
+        <%end%>
+      </table>
+    </div>
+    <%else%>
+      <p>No Leave Requests</p>
+    <%end%>
+  </div>
+<%end%>
+
+<div id='post-content'></div>
+
+

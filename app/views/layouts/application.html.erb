@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Task</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <% if user_signed_in? %>
+<!--       <div class="pull-right ">
+      Logged in as <strong><%= current_user.email %></strong>.
+      <%#= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'btn btn-info'  %>
+      </div> -->
+      <nav class="navbar navbar-default">
+        <div>
+          <ul class="nav navbar-nav pull-right">
+            <li style="padding-top: 10px;padding-right: 10px;">USER: &nbsp;<strong><%= current_user.email %></strong>.</li>
+            <li><%= link_to "LOGOUT", destroy_user_session_path, method: :delete, class: 'btn btn-danger', style: 'color: black;'  %></li>
+          </ul>
+        </div>
+      </nav>
+
+    <% end %>
+  </head>
+
+  <body>
+    <p class="notice"><%= notice %></p>
+    <%= yield %>
+  </body>
+</html>
+
